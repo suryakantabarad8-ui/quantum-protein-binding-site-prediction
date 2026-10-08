@@ -1,0 +1,174 @@
+Quantum-Enhanced Protein Binding-Site Prediction Using Qiskit
+
+Project Overview
+
+This project applies quantum machine learning to protein binding-site prediction. The COACH420 protein dataset is processed to identify binding and non-binding residues. A classical Support Vector Machine (SVM) is compared with a Quantum Kernel-based SVM implemented using Qiskit.
+
+Problem Statement
+
+Protein binding-site prediction is important for understanding how proteins interact with ligands and can support drug discovery research. This project explores whether a quantum kernel can provide useful classification performance compared with a classical SVM.
+
+Dataset
+
+* Dataset: COACH420
+* Protein structures: 420 PDB files
+* Total residue records: 119,143
+* Binding residues: 21,608
+* Non-binding residues: 97,535
+
+Binding residues were labelled using the minimum distance between protein residues and ligand atoms, with an 8 Å distance threshold.
+
+Features
+
+The model uses two features:
+
+* Amino acid code (aa_code)
+* Number of atoms (num_atoms)
+
+The target variable is:
+
+* label = 1 → Binding residue
+* label = 0 → Non-binding residue
+
+Methodology
+
+COACH420 Dataset
+       ↓
+PDB Processing
+       ↓
+Binding-Site Labelling
+       ↓
+Feature Extraction
+       ↓
+Balanced Sample (800 residues)
+       ↓
+ ┌───────────────────┐
+ │                   │
+Classical SVM    Quantum SVM
+ │                   │
+ │              Qiskit Quantum
+ │                  Kernel
+ │                   │
+ └──────────┬────────┘
+            ↓
+      Performance Comparison
+
+Classical Machine Learning
+
+A classical SVM with an RBF kernel was used as the baseline model.
+
+The dataset was balanced using:
+
+* 400 binding samples
+* 400 non-binding samples
+
+A protein-level train/test split was used to reduce data leakage between training and testing proteins.
+
+Quantum Machine Learning
+
+The quantum model uses:
+
+* Qiskit
+* ZZFeatureMap
+* FidelityQuantumKernel
+* SVM with a precomputed quantum kernel
+
+The quantum kernel maps the input features into a quantum feature space and calculates similarities between samples.
+
+Results
+
+Model	Accuracy	Precision	Recall	F1-Score
+Classical SVM	58.24%	60.00%	37.04%	45.80%
+Quantum SVM	53.53%	51.56%	40.74%	45.52%
+
+The classical SVM achieved higher accuracy, precision and slightly higher F1-score. The Quantum SVM achieved higher recall, indicating that it identified a slightly larger proportion of binding residues in the test set.
+
+Quantum Computing Component
+
+The main quantum component is the Qiskit quantum kernel. The feature vectors are encoded using a quantum feature map, and the resulting quantum kernel is used by an SVM classifier.
+
+This demonstrates the practical integration of quantum machine learning into a protein-related classification problem.
+
+Project Files
+
+protein-Binding-site-prediction/
+│
+├── code/
+│   ├── main.py
+│   ├── prepare_dataset.py
+│   ├── features.py
+│   ├── quantum_model.py
+│   └── compare_results.py
+│
+├── data/
+│   └── coach420/
+│
+├── presentation/
+│
+├── results/
+│   ├── dataset.csv
+│   ├── features.csv
+│   ├── results.csv
+│   ├── accuracy_comparison.png
+│   └── f1_comparison.png
+│
+└── README.md
+
+Technologies Used
+
+* Python
+* Pandas
+* NumPy
+* Scikit-learn
+* Matplotlib
+* Qiskit
+* Qiskit Machine Learning
+
+How to Run
+
+Install the required Python packages:
+
+pip install pandas numpy scikit-learn matplotlib qiskit qiskit-machine-learning
+
+Run dataset preparation:
+
+python code/prepare_dataset.py
+
+Generate features:
+
+python code/features.py
+
+Run the classical SVM:
+
+python code/main.py
+
+Run the Quantum SVM:
+
+python code/quantum_model.py
+
+Generate the final comparison:
+
+python code/compare_results.py
+
+Output
+
+The project generates:
+
+* Dataset CSV
+* Feature CSV
+* Final model comparison CSV
+* Accuracy comparison graph
+* F1-score comparison graph
+
+Conclusion
+
+This project demonstrates a practical comparison between classical and quantum-kernel-based machine learning for protein binding-site classification. The Quantum SVM successfully integrates Qiskit into the workflow and provides a different classification behaviour, particularly in recall. Future work can include richer structural features, larger quantum-compatible datasets, and execution on real quantum hardware.
+
+Future Work
+
+* Add more protein structural features
+* Improve ligand identification and binding-site labels
+* Test additional quantum feature maps
+* Compare different quantum kernels
+* Use larger and more diverse datasets
+* Evaluate the model on real quantum hardware
